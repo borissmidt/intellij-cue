@@ -13,8 +13,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * The format processing (via our PostFormatProcessor) is called on the EDT in a write action (as of 2020.3).
  * But format() expects a return value with the modified range. This makes it impossible to run the formatted
@@ -82,7 +80,7 @@ public class ExternalCueFormatter implements ExternalFormatProcessor {
         var app = ApplicationManager.getApplication();
         app.executeOnPooledThread(() -> {
             try {
-                var newContent = CueCommandService.getInstance().format(document.getText(), 5, TimeUnit.SECONDS);
+                var newContent = CueCommandService.getInstance().format(document.getText());
                 if (newContent != null) {
                     app.invokeLater(() -> {
                         if (!file.isValid()) {
